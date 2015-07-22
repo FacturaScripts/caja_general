@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : cajas_general.xml
+    Description:
+        Estructura de la tabla cajas_general.
+-->
+<tabla>
+    <columna>
+        <nombre>id</nombre>
+        <tipo>serial</tipo>
+        <nulo>NO</nulo>
+        <defecto>nextval('cajas_general_id_seq'::regclass)</defecto>
+    </columna>
+    <columna>
+        <nombre>codalmacen</nombre>
+        <tipo>varchar(4)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>codagente</nombre>
+        <tipo>varchar(10)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>f_inicio</nombre>
+        <tipo>timestamp</tipo>
+        <nulo>NO</nulo>
+        <defecto>0000-00-00 00:00:00</defecto>
+    </columna>
+    <columna>
+        <nombre>d_inicio</nombre>
+        <tipo>double</tipo>
+        <nulo>NO</nulo>
+        <defecto>0</defecto>
+    </columna>
+    <columna>
+        <nombre>codagente_fin</nombre>
+        <tipo>varchar(10)</tipo>
+        <nulo>YES</nulo>
+    </columna>
+    <columna>
+        <nombre>f_fin</nombre>
+        <tipo>timestamp</tipo>
+        <nulo>YES</nulo>
+    </columna>
+    <columna>
+        <nombre>d_fin</nombre>
+        <tipo>double</tipo>
+        <nulo>YES</nulo>
+    </columna>
+    <columna>
+        <nombre>apuntes</nombre>
+        <tipo>int(11)</tipo>
+        <nulo>YES</nulo>
+    </columna>
+    <columna>
+        <nombre>ip</nombre>
+        <tipo>varchar(40)</tipo>
+        <nulo>YES</nulo>
+    </columna>
+    <restriccion>
+        <nombre>cajas_general_pkey</nombre>
+        <consulta>PRIMARY KEY (id)</consulta>
+    </restriccion>
+    <restriccion>
+        <nombre>ca_cajas_general2</nombre>
+        <consulta>FOREIGN KEY (...)</consulta>
+    </restriccion>
+</tabla>
