@@ -59,40 +59,52 @@
    </div>
 </div>
 
-<h2 class="visible-print">Apuntes Caja General</h2>
+<h2 class="visible-print">Apuntes Caja:</h2>
 
+<ul class="nav nav-tabs hidden-print">
+   <li role="presentation"{if="!$fsc->tipo"} class="active"{/if}>
+      <a href="{$fsc->url()}">Todos</a>
+   </li>
+   <li role="presentation"{if="$fsc->tipo=='ingresos'"} class="active"{/if}>
+      <a href="{$fsc->url()}&tipo=ingresos">
+         <span class="glyphicon glyphicon-import"></span> &nbsp; Ingresos
+      </a>
+   </li>
+   <li role="presentation"{if="$fsc->tipo=='pagos'"} class="active"{/if}>
+      <a href="{$fsc->url()}&tipo=pagos">
+         <span class="glyphicon glyphicon-export"></span> &nbsp; Pagos
+      </a>
+   </li>
+</ul>
 
 <div class="table-responsive">
     <table class="table table-hover" id="myTable">
         <thead>
             <tr>
-                <th class="text-left">Caja ID</th>
-                <th class="text-left">Almacen</th>
-                <th class="text-left">Empleado Apertura</th>
-                <th class="text-center">Fecha Apertura</th>
-                <th class="text-right">Dinero Inicio</th>
-                <th class="text-center">Fecha Cierre</th>
-                <th class="text-right">Apuntes</th>
-                <th class="text-right">Arqueo</th>
+                <th class="text-left">Apunte ID</th>
+                <th class="text-center">Fecha</th>
+                <th class="text-left">Nota</th>
+                <th class="text-right">Importe</th>
+                <th class="text-center">Empleado</th>
                 <th class="text-right hidden-print">Acciones</th> 
             </tr>
         </thead>
         <!--{$total_caja=0}-->      
         {loop="$fsc->resultado"}
             <tr class="bg-warning">
-                <td colspan="9">Resultados.</td>
+                <td colspan="6">Resultados.</td>
             </tr>
         {else}
             <tr class="bg-warning">
-                <td colspan="9">Sin resultados.</td>
+                <td colspan="6">Sin resultados.</td>
             </tr>
         {/loop}
         
         {if="$fsc->offset==0"}
             <tr>
-                <td colspan="7"></td>
+                <td colspan="3"></td>
                 <td class="text-right"><b>{$fsc->show_numero($total_caja,2)} €</b></td>
-                <td colspan="1"></td>
+                <td colspan="2"></td>
             </tr>
         {/if}      
 
