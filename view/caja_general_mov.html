@@ -3,6 +3,20 @@
 <script src="plugins/caja_general/view/js/jquery.tablesorter.widgets.min.js"></script>
 
 <script type="text/javascript">
+   function get_modal_pago(id)
+   {
+      $.ajax({
+         type: 'POST',
+         url: '{$fsc->url()}',
+         dataType: 'html',
+         data: 'ajax=TRUE&id='+id,
+         success: function(datos) {
+            $("#div_editar_pago").html(datos);
+            $("#modal_editar_pago").modal('show');
+            document.f_editar_pago.nota.focus();
+         }
+      });
+   }    
    
    $(document).ready(function() {
       $("#b_nuevo_pago").click(function(event) {
@@ -23,26 +37,21 @@
           sortReset      : true,
           sortRestart    : true
       });      
-   });  
-   
-   function delete_apunte(id)
-   {
-        if(confirm("¿Realmente desea eliminar el apunte "+id+"?"))
-            window.location.href = '{$fsc->url()}&delete='+id;
-   }   
+   });    
 </script>
 
 <div class="container-fluid hidden-print" style="margin-top: 10px; margin-bottom: 10px;">
    <div class="row">
       <!-- Estos botones se muestran siempre, ocupando 4 o 8 de las 12 columnas -->
       <div class="col-sm-6">
-         <a href="{$fsc->url()}" class="btn btn-sm btn-default">
-            <span class="glyphicon glyphicon-refresh"></span>
+         <a href="index.php?page=caja_general" class="btn btn-sm btn-default">
+            <span class="glyphicon glyphicon-chevron-left"></span>
          </a>
          <a href="#" id="b_imprimir" class="btn btn-sm btn-default" onclick="window.print();">
             <span class="glyphicon glyphicon-print"></span>
             <span class="hidden-xs">&nbsp; Imprimir</span>
-         </a>           
+         </a>
+        {if="$fsc->cajaopen"}
          <a href="#" id="b_nuevo_ingreso" class="btn btn-sm btn-success">
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
             <span class="hidden-xs">&nbsp; Nuevo Ingreso</span>
@@ -50,28 +59,29 @@
          <a href="#" id="b_nuevo_pago" class="btn btn-sm btn-danger">
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
             <span class="hidden-xs">&nbsp; Nuevo Pago</span>
-         </a>          
+         </a>
+        {/if}
       </div>
       <div class="col-sm-6 text-right">
-         <h2 style="margin-top: 0px;">Apuntes Caja: POIO</h2>
+          <h2 style="margin-top: 0px;">Apuntes Caja Nº {$fsc->cajaid} - {$fsc->almacen->nombre}</h2>
       </div>
 
    </div>
 </div>
 
-<h2 class="visible-print">Apuntes Caja:</h2>
+<h2 class="visible-print">Apuntes Caja Nº {$fsc->cajaid} - Almacen: {$fsc->almacen->nombre} </h2>
 
 <ul class="nav nav-tabs hidden-print">
    <li role="presentation"{if="!$fsc->tipo"} class="active"{/if}>
-      <a href="{$fsc->url()}">Todos</a>
+      <a href="{$fsc->url()}&id={$fsc->cajaid}">Todos</a>
    </li>
    <li role="presentation"{if="$fsc->tipo=='ingresos'"} class="active"{/if}>
-      <a href="{$fsc->url()}&tipo=ingresos">
+      <a href="{$fsc->url()}&tipo=ingresos&id={$fsc->cajaid}">
          <span class="glyphicon glyphicon-import"></span> &nbsp; Ingresos
       </a>
    </li>
    <li role="presentation"{if="$fsc->tipo=='pagos'"} class="active"{/if}>
-      <a href="{$fsc->url()}&tipo=pagos">
+      <a href="{$fsc->url()}&tipo=pagos&id={$fsc->cajaid}">
          <span class="glyphicon glyphicon-export"></span> &nbsp; Pagos
       </a>
    </li>
@@ -82,36 +92,49 @@
         <thead>
             <tr>
                 <th class="text-left">Apunte ID</th>
+                <th class="text-center">Empleado</th>
                 <th class="text-center">Fecha</th>
                 <th class="text-left">Nota</th>
                 <th class="text-right">Importe</th>
-                <th class="text-center">Empleado</th>
-                <th class="text-right hidden-print">Acciones</th> 
             </tr>
         </thead>
         <!--{$total_caja=0}-->      
         {loop="$fsc->resultado"}
-            <tr class="bg-warning">
-                <td colspan="6">Resultados.</td>
+            {if="$fsc->allow_delete"}
+                <tr class="clickableRow{if="$value->importe<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->id}')">
+            {else}
+                <tr class="{if="$value->importe<=0"} bg-warning{/if}" href="#">
+            {/if}                      
+                <td>{$value->cajamov_id}</td>
+                <td>
+                    {if="$value->codagente"}
+                        {$value->agente->get_fullname()}
+                    {else}
+                        -
+                    {/if}
+                </td>
+                <td>{$value->f_apunte}</td>
+                <td>{if="$value->concepto==''"}-{else}{$value->concepto}{/if}</td>
+                <td class="text-right">{$fsc->show_numero($value->apunte,2)} €</td>
+                <!--{$total_caja+=$value->apunte}-->
             </tr>
         {else}
             <tr class="bg-warning">
-                <td colspan="6">Sin resultados.</td>
+                <td colspan="5">Sin resultados.</td>
             </tr>
         {/loop}
         
         {if="$fsc->offset==0"}
             <tr>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
                 <td class="text-right"><b>{$fsc->show_numero($total_caja,2)} €</b></td>
-                <td colspan="2"></td>
             </tr>
         {/if}      
 
     </table>
 </div> 
 
-<form name="f_nuevo_pago" class="form" action="{$fsc->url()}" method="post">
+<form name="f_nuevo_pago" class="form" action="{$fsc->url()}&id={$fsc->cajaid}" method="post">
    <div class="modal" id="modal_nuevo_pago">
       <div class="modal-dialog">
          <div class="modal-content">
@@ -141,7 +164,7 @@
    </div>
 </form>
 
-<form name="f_nuevo_ingreso" class="form" action="{$fsc->url()}" method="post">
+<form name="f_nuevo_ingreso" class="form" action="{$fsc->url()}&id={$fsc->cajaid}" method="post">
    <div class="modal" id="modal_nuevo_ingreso">
       <div class="modal-dialog">
          <div class="modal-content">

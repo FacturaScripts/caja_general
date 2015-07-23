@@ -86,6 +86,7 @@ class caja_general extends fs_controller
             $caja2 = $this->recogidas_model->get($_GET['delete']);
             if ($caja2) {
                 if ($caja2->delete()) {
+                    $this->new_log_msg('Caja eliminada correctamente...');
                     $this->new_message("Caja eliminada correctamente.");
                 } else
                     $this->new_error_msg("¡Imposible eliminar la caja!");
@@ -139,4 +140,23 @@ class caja_general extends fs_controller
       return $url;
    }    
 
+   private function new_log_msg($msg = FALSE, $tipo = 'caja', $alerta = FALSE)
+   {
+      if($msg)
+      {
+         $fslog = new fs_log();
+         $fslog->tipo = $tipo;
+         $fslog->detalle = $msg;
+         $fslog->ip = $_SERVER['REMOTE_ADDR'];
+         $fslog->alerta = $alerta;
+         
+         if($this->user)
+         {
+            $fslog->usuario = $this->user->nick;
+         }
+         
+         $fslog->save();
+      }
+   }   
+   
 }
