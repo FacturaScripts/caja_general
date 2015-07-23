@@ -7,17 +7,16 @@
    {
       $.ajax({
          type: 'POST',
-         url: '{$fsc->url()}',
+         url: '{$fsc->url()}&id={$fsc->cajaid}',
          dataType: 'html',
-         data: 'ajax=TRUE&id='+id,
+         data: 'ajax=TRUE&idapunte='+id,
          success: function(datos) {
-            $("#div_editar_pago").html(datos);
-            $("#modal_editar_pago").modal('show');
-            document.f_editar_pago.nota.focus();
+            $("#div_editar_apunte").html(datos);
+            $("#modal_editar_apunte").modal('show');
+            document.f_editar_apunte.concepto.focus();
          }
       });
-   }    
-   
+   }
    $(document).ready(function() {
       $("#b_nuevo_pago").click(function(event) {
          event.preventDefault();
@@ -102,7 +101,7 @@
         {loop="$fsc->resultados"}
             {if="$fsc->allow_delete"}
                 {if="$fsc->cajaopen"}
-                    <tr class="clickableRow{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->id}')">
+                    <tr class="clickableRow{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->cajamov_id}')">
                 {else}
                     <tr class="{if="$value->importe<=0"} bg-warning{/if}" href="#">
                 {/if}
@@ -198,4 +197,8 @@
       </div>
    </div>
 </form>
+
+
+<div id="div_editar_apunte"></div>
+
 {include="footer"}

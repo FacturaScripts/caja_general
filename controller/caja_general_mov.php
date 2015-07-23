@@ -25,6 +25,7 @@ class caja_general_mov extends fs_controller
    public $tipo;
    public $allow_delete;
    public $agente;
+   public $apunte;
 
    public function __construct() {
       parent::__construct(__CLASS__, 'Caja General', 'contabilidad', FALSE, FALSE);
@@ -58,11 +59,13 @@ class caja_general_mov extends fs_controller
                 $almacenes = new almacen();
                 $this->almacen = $almacenes->get($caja->codalmacen);
 
+                
                 if (isset($_POST['ajax'])) {
                     /* **********
                     // MODAL EDITAR APUNTE
                     * ********** */
-                    $this->template = 'ajax_pago';
+                    $this->apunte = $this->cajamov_model->get($_REQUEST['idapunte']);
+                    $this->template = 'ajax_apunte';
                 } else if (isset($_GET['delete'])) {
                     /* **********
                     // ELIMINAMOS APUNTE
