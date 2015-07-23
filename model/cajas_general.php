@@ -246,8 +246,15 @@ class cajas_general extends fs_model
                                     ,  " . $this->var2str($this->apuntes) . "
                                     ,  " . $this->var2str($this->ip) . "
                                     
-                                )";
-            return $this->db->exec($sql);
+                                )";               
+            if( $this->db->exec($sql) )
+            {
+               $this->id = $this->db->lastval();
+               return TRUE;
+            }
+            else
+               return FALSE;            
+            
         }
 
         return false;

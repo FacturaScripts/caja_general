@@ -99,22 +99,26 @@
             </tr>
         </thead>
         <!--{$total_caja=0}-->      
-        {loop="$fsc->resultado"}
+        {loop="$fsc->resultados"}
             {if="$fsc->allow_delete"}
-                <tr class="clickableRow{if="$value->importe<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->id}')">
+                {if="$fsc->cajaopen"}
+                    <tr class="clickableRow{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->id}')">
+                {else}
+                    <tr class="{if="$value->importe<=0"} bg-warning{/if}" href="#">
+                {/if}
             {else}
                 <tr class="{if="$value->importe<=0"} bg-warning{/if}" href="#">
             {/if}                      
                 <td>{$value->cajamov_id}</td>
-                <td>
+                <td class="text-center">
                     {if="$value->codagente"}
                         {$value->agente->get_fullname()}
                     {else}
                         -
                     {/if}
                 </td>
-                <td>{$value->f_apunte}</td>
-                <td>{if="$value->concepto==''"}-{else}{$value->concepto}{/if}</td>
+                <td class="text-center">{$value->f_apunte}</td>
+                <td class="text-left">{if="$value->concepto==''"}-{else}{$value->concepto}{/if}</td>
                 <td class="text-right">{$fsc->show_numero($value->apunte,2)} €</td>
                 <!--{$total_caja+=$value->apunte}-->
             </tr>
@@ -126,7 +130,8 @@
         
         {if="$fsc->offset==0"}
             <tr>
-                <td colspan="4"></td>
+                <td colspan="3"></td>
+                <td class="text-right"><b>Total: </b></td>
                 <td class="text-right"><b>{$fsc->show_numero($total_caja,2)} €</b></td>
             </tr>
         {/if}      

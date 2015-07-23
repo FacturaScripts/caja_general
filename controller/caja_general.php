@@ -24,6 +24,7 @@ class caja_general extends fs_controller
    public $busqueda;
    public $offset;
    public $agente;
+   public $cajamov_model;
 
 
    public function __construct() {
@@ -54,6 +55,8 @@ class caja_general extends fs_controller
 
         //cargamos nuestro modelo vacio de tabla caja general
         $this->recogidas_model = new cajas_general();
+        //Cargo el modelo de los movimientos
+        $this->cajamov_model = new cajas_general_mov();        
 
             /************
             // BUSCAR CAJA
@@ -74,7 +77,13 @@ class caja_general extends fs_controller
                 $this->recogidas_model->d_inicio = floatval($_POST['d_inicio']);
                 $this->recogidas_model->codagente = $this->agente->codagente;
                 if ($this->recogidas_model->save()) {
-                    $this->new_message("Caja iniciada con " . $this->show_numero($this->recogidas_model->d_inicio, 2) . ' €');
+                    //Genero una primera linea de entrada en la caja
+                    $this->cajamov_model->concepto = 'Apertura de Caja';
+                    $this->cajamov_model->apunte = floatval($_POST['d_inicio']);
+                    $this->cajamov_model->caja_id = $this->recogidas_model->id;
+                    $this->cajamov_model->codagente = $this->agente->codagente;
+                    if($this->cajamov_model->save())
+                        $this->new_message("Caja iniciada con " . $this->show_numero($this->recogidas_model->d_inicio, 2) . ' €');
                 } else
                     $this->new_error_msg("¡Imposible guardar los datos de caja!");
             } else
@@ -100,6 +109,7 @@ class caja_general extends fs_controller
             if ($caja2) {
                 $caja2->f_fin = Date('d-m-Y H:i:s');
                 $caja2->codagente_fin = $this->agente->codagente;
+                $caja2->apuntes = $this->cajamov_model->apuntes_contar($caja2->id);
                 if ($caja2->save()) {
                     $this->new_message("Caja cerrada correctamente.");
                 } else

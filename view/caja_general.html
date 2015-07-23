@@ -107,7 +107,7 @@
                          <td class="text-center">{$value->f_inicio}</td>
                          <td class="text-right">{$fsc->show_numero($value->d_inicio,2)} €</td>
                          <td class="text-center">{$value->f_fin}</td>
-                         <td class="text-right">{$fsc->show_numero($value->apuntes,0)}</td>
+                         <td class="text-right">{$fsc->show_numero($fsc->cajamov_model->apuntes_contar($value->id),0)}</td>
                          <td class="text-right">{$fsc->show_numero($value->diferencia(),2)} €</td>
                          <td class="text-right hidden-print">
                                 <a href="{$value->url()}" class="btn btn-xs btn-success" title="Apuntes">

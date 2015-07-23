@@ -11,9 +11,8 @@
  *
  * @author Zapasoft
  */
-require_model('cajas_general.php');
+
 require_model('cajas_general_mov.php');
-require_model('almacen.php');
 
 class caja_general_mov extends fs_controller
 { 
@@ -26,7 +25,6 @@ class caja_general_mov extends fs_controller
    public $tipo;
    public $allow_delete;
    public $agente;
-
 
    public function __construct() {
       parent::__construct(__CLASS__, 'Caja General', 'contabilidad', FALSE, FALSE);
@@ -46,6 +44,8 @@ class caja_general_mov extends fs_controller
         $this->caja_model = new cajas_general();
         //Cargo el modelo de los movimientos
         $this->cajamov_model = new cajas_general_mov();
+        //Conseguimos el agente
+        $this->agente = $this->user->get_agente();        
 
         if ($_GET['id'] != '') {
             $this->cajaid = $_GET['id'];
@@ -93,7 +93,8 @@ class caja_general_mov extends fs_controller
                     // CREAMOS APUNTE PAGO CONVERTIMOS A NEGATIVO
                     * ********** */         
                     $this->cajamov_model->concepto = $_POST['nota'];
-                    $this->cajamov_model->apunte = floatval($_POST['pago']) *= -1;
+                    $apunte = floatval($_POST['pago']);
+                    $this->cajamov_model->apunte = $apunte*= -1;
                     $this->cajamov_model->caja_id = $this->cajaid;
                     $this->cajamov_model->codagente = $this->agente->codagente;
                     if( $this->cajamov_model->save() ){
@@ -108,13 +109,13 @@ class caja_general_mov extends fs_controller
                 if (isset($_REQUEST['tipo'])) {
                     if ($_REQUEST['tipo'] == 'ingresos') {
                         $this->tipo = 'ingresos';
-                        $this->resultados = $this->cajamov_model->ingresos();
+                        $this->resultados = $this->cajamov_model->ingresos($this->cajaid);
                     } else if ($_REQUEST['tipo'] == 'pagos') {
                         $this->tipo = 'pagos';
-                        $this->resultados = $this->cajamov_model->pagos();
+                        $this->resultados = $this->cajamov_model->pagos($this->cajaid);
                     }
                 } else
-                    $this->resultados = $this->cajamov_model->get_all();
+                    $this->resultados = $this->cajamov_model->get_all($this->cajaid);
             } else
                 $this->new_error_msg('Caja no existe, ha sido eliminada anteriormente !', 'cajamov');
         } else
