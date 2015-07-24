@@ -156,7 +156,7 @@ class cajas_general_mov extends fs_model
 
         $value = $this->var2str($this->cajamov_id);
         if ($this->cajamov_id) {
-            $sql = "DELETE FROM {$this->table_name} WHERE cajamov_id = $value)";
+            $sql = "DELETE FROM {$this->table_name} WHERE cajamov_id = $value;";
             return $this->db->exec($sql);
         }
     }

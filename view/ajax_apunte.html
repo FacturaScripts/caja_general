@@ -16,14 +16,15 @@
                </div>
                <div class="form-group">
                   Importe:
-                  <input type="text" name="apunte" class="form-control" value="{$fsc->apunte->apunte}" autocomplete="off"/>
+                  <input type="text" name="importe" class="form-control" value="{$fsc->apunte->apunte}" autocomplete="off"/>
                </div>
             </div>
             <div class="modal-footer">
-               <a href="{$fsc->url()}&id={$fsc->cajaid}&delete={$fsc->apunte->cajamov_id}" class="btn btn-sm btn-danger pull-left">
-                  <span class="glyphicon glyphicon-trash"></span> &nbsp; Eliminar
-               </a>
-               
+                {if="$fsc->allow_delete"}
+                    <a href="{$fsc->url()}&id={$fsc->cajaid}&delete={$fsc->apunte->cajamov_id}" class="btn btn-sm btn-danger pull-left">
+                    <span class="glyphicon glyphicon-trash"></span> &nbsp; Eliminar
+                    </a>
+                {/if}
                <div class="btn-group">
                   <button class="btn btn-sm btn-primary" type="submit" onclick="this.disabled=true;this.form.submit();">
                      <span class="glyphicon glyphicon-floppy-disk"></span> &nbsp; Guardar

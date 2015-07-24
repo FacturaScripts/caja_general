@@ -94,7 +94,7 @@
         </thead>
         <!--{$total_caja=0}-->      
         {loop="$fsc->resultado"}
-            <tr class="{if condition="$value->abierta()"} bg-warning {elseif condition="$value->d_fin < 0"} bg-danger {/if}" href="#" >
+            <tr class="{if condition="$value->abierta()"} bg-warning {elseif condition="$value->d_fin < 0"} bg-danger {/if}" href="#" {if="!$fsc->allow_delete"} onclick="window.location.href ='{$value->url()}'; return false;" {/if}>
                          <td>{$value->id}</td>
                          <td>{$value->nombre_almacen()->nombre}</td>
                          <td>

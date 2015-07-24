@@ -95,7 +95,7 @@ class caja_general extends fs_controller
             $caja2 = $this->recogidas_model->get($_GET['delete']);
             if ($caja2) {
                 if ($caja2->delete()) {
-                    $this->new_log_msg('Caja eliminada correctamente...');
+                    $this->new_log_msg('Caja Nº '.$_GET['delete'].' eliminada correctamente...');
                     $this->new_message("Caja eliminada correctamente.");
                 } else
                     $this->new_error_msg("¡Imposible eliminar la caja!");

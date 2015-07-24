@@ -59,13 +59,31 @@ class caja_general_mov extends fs_controller
                 $almacenes = new almacen();
                 $this->almacen = $almacenes->get($caja->codalmacen);
 
-                
-                if (isset($_POST['ajax'])) {
+                /* **********
+                // MODAL APUNTE
+                * ********** */
+                if($_REQUEST['idapunte']){
+                    $this->apunte = $this->cajamov_model->get($_REQUEST['idapunte']);
+                    
+                    // VISUALIZAR MODAL APUNTE
+                    if (isset($_POST['ajax'])) {
+                         $this->template = 'ajax_apunte';
+                    }                
                     /* **********
                     // MODAL EDITAR APUNTE
                     * ********** */
-                    $this->apunte = $this->cajamov_model->get($_REQUEST['idapunte']);
-                    $this->template = 'ajax_apunte';
+                    if (isset($_POST['importe'])) {
+                        $this->apunte->concepto = $_POST['concepto'];
+                        $this->apunte->apunte = floatval($_POST['importe']);
+                        $this->apunte->caja_id = $this->cajaid;
+                        $this->apunte->codagente = $this->agente->codagente;
+                        if( $this->apunte->save() ){
+                           $this->new_message('Apunte EDITADO correctamente.');
+                           $this->new_log_msg('Apunte Nº '.$_REQUEST['idapunte'].' de la CAJA Nº '.$this->cajaid.' EDITADO correctamente.');
+                         }
+                        else
+                            $this->new_error_msg('Imposible EDITAR apunte Nº '.$_REQUEST['idapunte']);
+                    }
                 } else if (isset($_GET['delete'])) {
                     /* **********
                     // ELIMINAMOS APUNTE
@@ -74,6 +92,7 @@ class caja_general_mov extends fs_controller
                     if ($apunte) {
                         if ($apunte->delete()) {
                             $this->new_message('Apunte ' . $_GET['delete'] . ' eliminado correctamente.');
+                            $this->new_log_msg('Apunte Nº '.$_GET['delete'].' de la CAJA Nº '.$this->cajaid.' eliminado correctamente.');
                         } else
                             $this->new_error_msg('Error al eliminar el apunte ' . $_GET['delete']);
                     } else
@@ -124,6 +143,25 @@ class caja_general_mov extends fs_controller
         } else
             $this->new_error_msg('Caja NO seleccionada correctamente!', 'cajamov');
     }
+    
+   private function new_log_msg($msg = FALSE, $tipo = 'cajamov', $alerta = FALSE)
+   {
+      if($msg)
+      {
+         $fslog = new fs_log();
+         $fslog->tipo = $tipo;
+         $fslog->detalle = $msg;
+         $fslog->ip = $_SERVER['REMOTE_ADDR'];
+         $fslog->alerta = $alerta;
+         
+         if($this->user)
+         {
+            $fslog->usuario = $this->user->nick;
+         }
+         
+         $fslog->save();
+      }
+   }    
 
 }
 
