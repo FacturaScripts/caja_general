@@ -54,16 +54,23 @@
     </columna>    
     <columna>
         <nombre>apuntes</nombre>
-        <tipo>int(11)</tipo>
+        <tipo>integer</tipo>
+        <default>0</default>
         <nulo>YES</nulo>
     </columna>
     <columna>
         <nombre>ip</nombre>
-        <tipo>varchar(40)</tipo>
+        <tipo>character varying(40)</tipo>
         <nulo>YES</nulo>
     </columna>
     <restriccion>
         <nombre>cajas_general_pkey</nombre>
         <consulta>PRIMARY KEY (id)</consulta>
     </restriccion>
+   <restriccion>
+      <nombre>ca_cajas_agentes3</nombre>
+      <consulta>FOREIGN KEY (codagente)
+      REFERENCES agentes (codagente)
+      ON DELETE RESTRICT ON UPDATE CASCADE</consulta>
+   </restriccion>    
 </tabla>
