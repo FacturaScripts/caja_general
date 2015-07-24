@@ -72,5 +72,11 @@
       <consulta>FOREIGN KEY (codagente)
       REFERENCES agentes (codagente)
       ON DELETE RESTRICT ON UPDATE CASCADE</consulta>
-   </restriccion>    
+   </restriccion>  
+   <restriccion>
+      <nombre>ca_cajas_almacenes3</nombre>
+      <consulta>FOREIGN KEY (codalmacen)
+      REFERENCES almacenes (codalmacen)
+      ON DELETE RESTRICT ON UPDATE CASCADE</consulta>
+   </restriccion>       
 </tabla>
