@@ -32,6 +32,7 @@ class cajas_general extends fs_model
     public $d_inicio;
     public $f_fin;
     public $d_fin;
+    public $descuadre;
 
     /**
      * Numero de tickets emitidos en esta caja.
@@ -79,6 +80,7 @@ class cajas_general extends fs_model
                 $this->f_fin = Date('d-m-Y H:i:s', strtotime($data['f_fin']));
 
             $this->d_fin = floatval($data['d_fin']);
+            $this->descuadre = floatval($data['descuadre']);
             $this->apuntes = $this->intval($data['apuntes']);
 
             $this->ip = NULL;
@@ -107,6 +109,7 @@ class cajas_general extends fs_model
             $this->codagente_fin = NULL;
             $this->f_fin = NULL;    
             $this->d_fin = 0;
+            $this->descuadre = 0;
             $this->apuntes = 0;
             
             $this->ip = NULL;
@@ -215,6 +218,7 @@ class cajas_general extends fs_model
                         , d_fin = " . $this->var2str($this->d_fin) . "
                         , apuntes = " . $this->var2str($this->apuntes) . "
                         , ip = " . $this->var2str($this->ip) . "
+                        , descuadre = " . $this->var2str($this->descuadre) . "
                           WHERE id = $value";
                 return $this->db->exec($sql);
             }
@@ -233,6 +237,7 @@ class cajas_general extends fs_model
                                     , d_fin
                                     , apuntes
                                     , ip
+                                    , descuadre
                                     
                                 ) VALUES (
                                      " . $this->var2str($this->id) . "
@@ -245,6 +250,7 @@ class cajas_general extends fs_model
                                     ,  " . $this->var2str($this->d_fin) . "
                                     ,  " . $this->var2str($this->apuntes) . "
                                     ,  " . $this->var2str($this->ip) . "
+                                    ,  " . $this->var2str($this->descuadre) . "
                                     
                                 )";               
             if( $this->db->exec($sql) )
@@ -314,11 +320,11 @@ class cajas_general extends fs_model
         }
 
         if ($desde != '') {
-            $sql .= " AND `f_fin` >= " . $this->var2str($desde);
+            $sql .= " AND `f_inicio` >= " . $this->var2str($desde);
         }
 
         if ($hasta != '') {
-            $sql .= " AND `f_fin` <= " . $this->var2str($hasta);
+            $sql .= " AND `f_inicio` <= " . $this->var2str($hasta);
         }
 
         //Finalmente compruebo el orden

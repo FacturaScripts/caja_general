@@ -49,6 +49,11 @@
         <nulo>YES</nulo>
     </columna>
     <columna>
+        <nombre>descuadre</nombre>
+        <tipo>double</tipo>
+        <nulo>YES</nulo>
+    </columna>    
+    <columna>
         <nombre>apuntes</nombre>
         <tipo>int(11)</tipo>
         <nulo>YES</nulo>
@@ -61,9 +66,5 @@
     <restriccion>
         <nombre>cajas_general_pkey</nombre>
         <consulta>PRIMARY KEY (id)</consulta>
-    </restriccion>
-    <restriccion>
-        <nombre>ca_cajas_general2</nombre>
-        <consulta>FOREIGN KEY (...)</consulta>
     </restriccion>
 </tabla>

@@ -94,24 +94,44 @@ class caja_general extends fs_controller
              * ********** */
             $caja2 = $this->recogidas_model->get($_GET['delete']);
             if ($caja2) {
+                //OK, ahora eliminamos todos sus apuntes
+                $this->cajamov_model->delete_all($caja2->id);
+                //Y ahora eliminamos
                 if ($caja2->delete()) {
-                    $this->new_log_msg('Caja Nº '.$_GET['delete'].' eliminada correctamente...');
-                    $this->new_message("Caja eliminada correctamente.");
+                    $this->new_log_msg('Caja Nº '.$_GET['delete'].' y apuntes eliminados correctamente...');
+                    $this->new_message("Caja y Apuntes eliminados correctamente.");
                 } else
                     $this->new_error_msg("¡Imposible eliminar la caja!");
             } else
                 $this->new_error_msg("Caja no encontrada.");
-        } else if (isset($_GET['cerrar'])) {
+        } else if (isset($_POST['cierre'])) {
             /*             * ***********
               // CERRAR CAJA
              * ********** */
-            $caja2 = $this->recogidas_model->get($_GET['cerrar']);
+            $caja2 = $this->recogidas_model->get($_POST['cierre']);
             if ($caja2) {
+                $saldo = $this->cajamov_model->apuntes_suma($caja2->id);
+                $contado = floatval($_POST['d_fin']);
+                $descuadre = $contado - $saldo;
+                
                 $caja2->f_fin = Date('d-m-Y H:i:s');
+                $caja2->d_fin = floatval($_POST['d_fin']);
+                $caja2->descuadre = $descuadre;
                 $caja2->codagente_fin = $this->agente->codagente;
                 $caja2->apuntes = $this->cajamov_model->apuntes_contar($caja2->id);
+
                 if ($caja2->save()) {
                     $this->new_message("Caja cerrada correctamente.");
+                    //Si hay descuadre lo aviso y genero linea en su caja
+                    if(($descuadre)!= 0){
+                        //Genero una linea del descuadre en la caja
+                        $this->cajamov_model->concepto = 'Descuadre en Caja';
+                        $this->cajamov_model->apunte = $descuadre;
+                        $this->cajamov_model->caja_id = $caja2->id;
+                        $this->cajamov_model->codagente = $this->agente->codagente;
+                        if($this->cajamov_model->save())                        
+                            $this->new_advice('DESCUADRE: Se ha anotado un apunte con el descuadre de la Caja Nº '.$caja2->id);
+                    }
                 } else
                     $this->new_error_msg("¡Imposible cerrar la caja!");
             } else

@@ -1,3 +1,1 @@
-Modulo para uso de una Caja Contable General por Almacen, y control de usuarios, que permite la introducción manual de apuntes de Ingreso o Pago.
-<br />
-<b>Nota: en desarrollo</b>
+Modulo que genera la posibilidad de crear Cajas Contables por almacen, con control de cambios por usuario, permite la introducción manual de apuntes DEBE ó HABER.

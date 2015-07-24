@@ -101,12 +101,16 @@
         {loop="$fsc->resultados"}
             {if="$fsc->allow_delete"}
                 {if="$fsc->cajaopen"}
-                    <tr class="clickableRow{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->cajamov_id}')">
+                    {if="$value->concepto!='Apertura de Caja'"}
+                        <tr class="clickableRow{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->cajamov_id}')">
+                    {else}
+                        <tr class="{if="$value->apunte<=0"} bg-warning{/if}" href="#">
+                    {/if}                     
                 {else}
-                    <tr class="{if="$value->importe<=0"} bg-warning{/if}" href="#">
+                    <tr class="{if="$value->apunte<=0"} bg-warning{/if}" href="#">
                 {/if}
             {else}
-                <tr class="{if="$value->importe<=0"} bg-warning{/if}" href="#">
+                <tr class="{if="$value->apunte<=0"} bg-warning{/if}" href="#">
             {/if}                      
                 <td>{$value->cajamov_id}</td>
                 <td class="text-center">

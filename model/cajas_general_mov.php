@@ -150,7 +150,7 @@ class cajas_general_mov extends fs_model
     }
 
     /**
-     * Esta función sirve para eliminar los datos del objeto de la base de datos
+     * Esta función sirve para eliminar el apunte seleccionado
      */
     public function delete() {
 
@@ -160,6 +160,15 @@ class cajas_general_mov extends fs_model
             return $this->db->exec($sql);
         }
     }
+    
+    /**
+     * Esta función sirve para eliminar los apuntes de la caja enviada a la funcion
+     */
+    public function delete_all($caja_id = '') {
+        if ($caja_id) {
+            return $this->db->exec("DELETE FROM {$this->table_name} WHERE caja_id = ".$this->var2str($caja_id).";");
+        }
+    }    
 
     public function get($cod) {
         $cod = $this->var2str($cod);
@@ -209,7 +218,19 @@ class cajas_general_mov extends fs_model
       
       return $num;        
     }
-
+    
+    public function apuntes_suma($caja_id = ''){
+      $num = 0;
+      
+      $apuntes = $this->db->select("SELECT SUM(apunte) as total FROM ".$this->table_name." WHERE caja_id = ".$this->var2str($caja_id).";");
+      if($apuntes)
+      {
+         $num = floatval($apuntes[0]['total']);
+      }
+      
+      return $num;        
+    }
+    
     public function parse($items, $array = false) {
         if (count($items) > 1 || $array) {
             $list = array();

@@ -73,11 +73,16 @@ class caja_general_mov extends fs_controller
                     // MODAL EDITAR APUNTE
                     * ********** */
                     if (isset($_POST['importe'])) {
+                        if($this->apunte->concepto == 'Apertura de Caja') {
+                            $this->resultados = $this->cajamov_model->get_all($this->cajaid);
+                            $this->new_error_msg('OJO! Apunte inicial: NO EDITABLE...');
+                            return;
+                        }
                         $this->apunte->concepto = $_POST['concepto'];
                         $this->apunte->apunte = floatval($_POST['importe']);
                         $this->apunte->caja_id = $this->cajaid;
                         $this->apunte->codagente = $this->agente->codagente;
-                        if( $this->apunte->save() ){
+                        if( $this->apunte->save()){
                            $this->new_message('Apunte EDITADO correctamente.');
                            $this->new_log_msg('Apunte Nº '.$_REQUEST['idapunte'].' de la CAJA Nº '.$this->cajaid.' EDITADO correctamente.');
                          }
@@ -90,6 +95,11 @@ class caja_general_mov extends fs_controller
                     * ********** */                    
                     $apunte = $this->cajamov_model->get($_GET['delete']);
                     if ($apunte) {
+                        if($apunte->concepto == 'Apertura de Caja') {
+                            $this->resultados = $this->cajamov_model->get_all($this->cajaid);
+                            $this->new_error_msg('OJO! Apunte incicial: NO se puede eliminar');
+                            return;
+                        }                        
                         if ($apunte->delete()) {
                             $this->new_message('Apunte ' . $_GET['delete'] . ' eliminado correctamente.');
                             $this->new_log_msg('Apunte Nº '.$_GET['delete'].' de la CAJA Nº '.$this->cajaid.' eliminado correctamente.');
