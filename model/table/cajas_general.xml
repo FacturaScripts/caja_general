@@ -23,13 +23,12 @@
     </columna>
     <columna>
         <nombre>f_inicio</nombre>
-        <tipo>timestamp</tipo>
+        <tipo>timestamp without time zone</tipo>
         <nulo>NO</nulo>
-        <defecto>0000-00-00 00:00:00</defecto>
     </columna>
     <columna>
         <nombre>d_inicio</nombre>
-        <tipo>double</tipo>
+        <tipo>double precision</tipo>
         <nulo>NO</nulo>
         <defecto>0</defecto>
     </columna>
@@ -40,17 +39,17 @@
     </columna>
     <columna>
         <nombre>f_fin</nombre>
-        <tipo>timestamp</tipo>
+        <tipo>timestamp without time zone</tipo>
         <nulo>YES</nulo>
     </columna>
     <columna>
         <nombre>d_fin</nombre>
-        <tipo>double</tipo>
+        <tipo>double precision</tipo>
         <nulo>YES</nulo>
     </columna>
     <columna>
         <nombre>descuadre</nombre>
-        <tipo>double</tipo>
+        <tipo>double precision</tipo>
         <nulo>YES</nulo>
     </columna>    
     <columna>

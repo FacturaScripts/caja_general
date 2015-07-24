@@ -23,15 +23,13 @@
     </columna>
     <columna>
         <nombre>f_apunte</nombre>
-        <tipo>timestamp</tipo>
+        <tipo>timestamp without time zone</tipo>
         <nulo>NO</nulo>
-        <defecto>0000-00-00 00:00:00</defecto>
     </columna>
     <columna>
         <nombre>apunte</nombre>
-        <tipo>double</tipo>
-        <nulo>NO</nulo>
-        <defecto>0</defecto>
+        <tipo>double precision</tipo>
+        <nulo>YES</nulo>
     </columna>
     <columna>
         <nombre>concepto</nombre>
@@ -40,7 +38,7 @@
     </columna>
     <columna>
         <nombre>subtotal</nombre>
-        <tipo>double</tipo>
+        <tipo>double precision</tipo>
         <nulo>YES</nulo>
     </columna>
     <columna>
