@@ -45,6 +45,7 @@ class caja_general_mov extends fs_controller
         $this->caja_model = new cajas_general();
         //Cargo el modelo de los movimientos
         $this->cajamov_model = new cajas_general_mov();
+
         //Conseguimos el agente
         $this->agente = $this->user->get_agente();        
 
@@ -62,7 +63,7 @@ class caja_general_mov extends fs_controller
                 /* **********
                 // MODAL APUNTE
                 * ********** */
-                if($_REQUEST['idapunte']){
+                if(isset($_REQUEST['idapunte'])){
                     $this->apunte = $this->cajamov_model->get($_REQUEST['idapunte']);
                     
                     // VISUALIZAR MODAL APUNTE
@@ -107,7 +108,7 @@ class caja_general_mov extends fs_controller
                             $this->new_error_msg('Error al eliminar el apunte ' . $_GET['delete']);
                     } else
                         $this->new_error_msg('Apunte ' . $_GET['delete'] . ' no encontrado.');
-                }else if ($_POST['ingreso']>0) {
+                }else if (isset($_POST['ingreso']) AND $_POST['ingreso']>0) {
                     /* **********
                     // CREAMOS APUNTE INGRESO POSITIVO
                     * ********** */  
@@ -120,7 +121,7 @@ class caja_general_mov extends fs_controller
                     }
                     else
                         $this->new_error_msg('Imposible guardar el ingreso.');
-                }else if ($_POST['pago']>0) {
+                }else if (isset ($_POST['pago']) AND $_POST['pago']>0) {
                     /* **********
                     // CREAMOS APUNTE PAGO CONVERTIMOS A NEGATIVO
                     * ********** */         

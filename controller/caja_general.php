@@ -68,7 +68,7 @@ class caja_general extends fs_controller
 
             $this->resultado = $this->recogidas_model->search($this->busqueda['filtro_almacen'], $this->busqueda['desde'], $this->busqueda['hasta']);
             return;
-        } elseif($_POST['almacen']!= '') {
+        } elseif(isset($_POST['almacen'])) {
             /************
             // ABRIR CAJA
             * ********** */
@@ -162,7 +162,7 @@ class caja_general extends fs_controller
    {
       $url = '';
       
-      if( count($this->resultados) == FS_ITEM_LIMIT )
+      if( count($this->resultado) == FS_ITEM_LIMIT )
       {
          $url = $this->url()."&offset=".($this->offset+FS_ITEM_LIMIT);
       }
