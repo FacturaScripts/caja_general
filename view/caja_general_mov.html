@@ -14,9 +14,9 @@
             $("#div_editar_apunte").html(datos);
             $("#modal_editar_apunte").modal('show');
             document.f_editar_apunte.concepto.focus();
-         }
+        }
       });
-   }
+    }
    $(document).ready(function() {
       $("#b_nuevo_pago").click(function(event) {
          event.preventDefault();
@@ -102,7 +102,7 @@
             {if="$fsc->allow_delete"}
                 {if="$fsc->cajaopen"}
                     {if="$value->concepto!='Apertura de Caja'"}
-                        <tr class="clickableRow{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->cajamov_id}')">
+                        <tr class="{if="$value->apunte<=0"} bg-warning{/if}" href="#" onclick="get_modal_pago('{$value->cajamov_id}');return false;">
                     {else}
                         <tr class="{if="$value->apunte<=0"} bg-warning{/if}" href="#">
                     {/if}                     

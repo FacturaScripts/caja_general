@@ -112,7 +112,7 @@ class caja_general extends fs_controller
             if ($caja2) {
                 $saldo = $this->cajamov_model->apuntes_suma($caja2->id);
                 $contado = floatval($_POST['d_fin']);
-                $descuadre = $contado - $saldo;
+                $descuadre = round(($contado - $saldo), 2);
                 
                 $caja2->f_fin = Date('d-m-Y H:i:s');
                 $caja2->d_fin = floatval($_POST['d_fin']);
