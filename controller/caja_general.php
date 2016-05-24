@@ -36,7 +36,7 @@ class caja_general extends fs_controller
     * esta función se ejecuta si el usuario ha hecho login,
     * a efectos prácticos, este es el constructor
     */
-   protected function process() {
+   protected function private_core() {
         $this->busqueda = array(
             'contenido' => '',
             'filtro_almacen' => '',

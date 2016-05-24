@@ -36,7 +36,7 @@ class caja_general_mov extends fs_controller
     * esta función se ejecuta si el usuario ha hecho login,
     * a efectos prácticos, este es el constructor
     */
-   protected function process() {
+   protected function private_core() {
 
         /// ¿El usuario tiene permiso para eliminar en esta página?
         $this->allow_delete = $this->user->allow_delete_on(__CLASS__);
